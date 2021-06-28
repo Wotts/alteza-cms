@@ -1,0 +1,50 @@
+version: '3.7'
+
+
+networks:
+
+    alteza-net:
+
+
+services:
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./app:/var/www/project
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - alteza-cms
+      - db
+    networks:
+      - alteza-net
+
+  alteza-cms:
+    build:
+      context: .
+      dockerfile: ./php/Dockerfile
+    container_name:
+      alteza-cms
+    ports:
+        - 9000:9000
+    volumes:
+      - ./app:/var/www/project
+    networks:
+      - alteza-net
+
+  db:
+    image: postgres:latest
+    container_name: db
+    ports:
+      - 3306:3306
+    volumes:
+      - ./psql:/var/lib/psql
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secret
+    networks:
+      - alteza-net
