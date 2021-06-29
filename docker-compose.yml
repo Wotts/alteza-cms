@@ -42,6 +42,7 @@ services:
       - 3306:3306
     volumes:
       - ./psql:/var/lib/psql
+      - ./sql/instantiate_db.sql:/docker-entrypoint-initdb.d/instantiate_db.sql
     restart: always
     environment:
       POSTGRES_USER: root
