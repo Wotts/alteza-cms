@@ -15,6 +15,7 @@ BEGIN;
     CREATE TABLE IF NOT EXISTS posts (
         id SERIAL PRIMARY KEY NOT NULL,
         creator INTEGER NOT NULL REFERENCES users(id),
+        title VARCHAR NOT NULL,
         content VARCHAR NOT NULL
     );
 
