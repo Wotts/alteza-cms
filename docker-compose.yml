@@ -1,11 +1,6 @@
 version: '3.7'
 
 
-networks:
-
-    alteza-net:
-
-
 services:
 
   nginx:
@@ -39,13 +34,18 @@ services:
     image: postgres:latest
     container_name: db
     ports:
-      - 3306:3306
+      - 5432:5432
     volumes:
       - ./psql:/var/lib/psql
-      - ./sql/instantiate_db.sql:/docker-entrypoint-initdb.d/instantiate_db.sql
+#      - ./sql/instantiate_db.sql:/docker-entrypoint-initdb.d/instantiate_db.sql
     restart: always
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: secret
     networks:
       - alteza-net
+
+
+networks:
+
+  alteza-net:
