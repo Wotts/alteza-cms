@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\String_;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -31,17 +34,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private string $password;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Role::class, inversedBy="users")
+     */
+    private $roles;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="creator")
+     */
+    private $comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="creator")
+     */
+    private $post;
+
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->username;
+    }
+
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
-     */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
     public function setUsername(string $username): self
@@ -51,31 +76,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->HasRoles->role;
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
+        return $this->username;
     }
 
     /**
@@ -111,5 +114,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Role[]
+     */
+    public function getRoles(): Collection
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @return Collection|Role[]
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    /**
+     * @return Collection|Role[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addRole(Role $role): self
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    public function removeRole(Role $role): self
+    {
+        $this->roles->removeElement($role);
+
+        return $this;
     }
 }
