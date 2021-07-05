@@ -36,14 +36,11 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-//            $parameters = json_decode($request->getContent(), true);
-//            var_dump($parameters);
-//            print_r($parameters);
+//            var_dump($request->request->get('user'));
 //            die;
-//            $password = $passwordEncoder->hashPassword($user, $parameters['plainPassword']);
-            $password = $passwordEncoder->hashPassword($user, 'henk');
+            $password = $passwordEncoder->hashPassword($user, $request->request->get('user')['plainPassword']);
             $user->setPassword($password);
+            $user->setRoles($request->request->get('user')['roles']);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();

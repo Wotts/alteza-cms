@@ -17,13 +17,15 @@ class UserType extends AbstractType
         $builder
             ->add('username')
             ->add('plainPassword', TextType::class, array(
-                'mapped' => false
+                'mapped' => false,
+                'required' => false
             ))
             ->add('roles', ChoiceType::class, array(
                 'choices' => array(
                     'user' => 'ROLE_USER',
                     'admin' => 'ROLE_ADMIN'
                 ),
+                'empty_data' => 'ROLE_USER',
                 'label' => 'Role :',
                 'multiple' => true,
                 'expanded' => true,
