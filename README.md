@@ -1,10 +1,10 @@
 # alteza-cms
 
-###before run:
+### before run:
 #### install dependencies
 `cd app && composer install && cd ..`
 
-###to run:
+### to run:
 `make up`
 
 #### create and populate database:
@@ -16,16 +16,9 @@
 
 `php bin/console doctrine:fixtures:load`
 
-###to test:
-`make test`
+visit http://localhost:8080/
 
-###login with:
+### login with:
 baas:eindbaas
+
 gebruiker:welkom01
-
-todo:
-creator bij aanmaak post/comment getten, object relaties fixen (getCreator $this->username ofzo)
-password hashing, nu wordt nog default henk gebruikt
-
-tests?
-phpstan / styling / annotation zooi
