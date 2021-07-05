@@ -1,7 +1,7 @@
 security:
-#    encoders:
-#        App\Entity\User:
-#            algorithm: auto
+    encoders:
+        App\Entity\User:
+            algorithm: auto
     password_hashers:
         App\Entity\User:
             algorithm: auto
@@ -25,20 +25,11 @@ security:
             custom_authenticator: App\Security\AltezaAuthenticator
             logout:
                 path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
-
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/user, roles: IS_AUTHENTICATED_FULLY }
-#        - { path: ^/role, roles: ADMIN }
-#        - { path: ^/post, roles: [ADMIN, USER] }
-#        - { path: ^/comment, roles: [ADMIN, USER] }
-
+        - { path: ^/user, roles: ROLE_ADMIN }
+        - { path: ^/post, roles: [ROLE_ADMIN, ROLE_USER] }
+        - { path: ^/comment, roles: [ROLE_ADMIN, ROLE_USER] }

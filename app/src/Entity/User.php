@@ -6,8 +6,8 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\String_;
-//use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -15,7 +15,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="users")
  */
-//class User implements UserInterface, UserPasswordHasherInterface, PasswordAuthenticatedUserInterface
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 {
@@ -32,30 +31,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $username;
 
     /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
     private string $password;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Role::class, inversedBy="users")
+     * @var string The plaintext password
      */
-    private $roles;
+    private string $plainPassword;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="creator")
      */
-    private $comments;
+    private Collection $comments;
 
     /**
      * @ORM\OneToMany(targetEntity=Post::class, mappedBy="creator")
      */
-    private $posts;
-
+    private Collection $posts;
 
     public function __construct()
     {
         $this->roles = new ArrayCollection();
+        $this->plainPassword = 'henk';
     }
 
     public function __toString(): string
@@ -96,9 +100,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-//        $this->password = $this->hashPassword($password);
 
         return $this;
+    }
+
+    public function getPlainPassword(): string
+    {
+        return $this->plainPassword;
     }
 
     /**
@@ -121,13 +129,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
+    /**
+     * @see UserInterface
+     */
     public function getRoles(): array
     {
-        $roles = [];
-        foreach ($this->roles as $role) {
-            array_push($roles, $role->getDescription());
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+        if (gettype($roles) == 'array') {
+            return array_unique($roles);
         }
-        return $roles;
+
+        return array_unique($roles->toArray());
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function getPosts(): Collection
@@ -140,7 +160,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->comments;
     }
 
-    public function addRole(Role $role): self
+    public function addRole($role): self
     {
         if (!$this->roles->contains($role)) {
             $this->roles[] = $role;
@@ -149,7 +169,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeRole(Role $role): self
+    public function removeRole($role): self
     {
         $this->roles->removeElement($role);
 

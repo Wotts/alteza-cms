@@ -30,7 +30,7 @@
                     {% if user is defined and user is not null %}
                         <td>
                             <a class="btn btn-secondary" href="{{ path('post_show', {'id': post.id}) }}">show comments</a>
-                            {% if user.id == post.creator or 'ADMIN' in user.roles %}
+                            {% if user.id == post.creator or 'ROLE_ADMIN' in user.roles %}
                                 <a class="btn btn-secondary" href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
                             {% endif %}
                         </td>

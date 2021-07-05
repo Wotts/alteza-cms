@@ -11,9 +11,8 @@
         <h1>Welcome to the blog about whateverandthensomething!</h1>
         {% if user is defined and user is not null %}
             Hallo {{ user.username }}!
-            {% if 'ADMIN' in user.roles %}
+            {% if 'ROLE_ADMIN' in user.roles %}
                 <a class="btn btn-secondary" href="{{ path('user_index') }}">Edit users</a>
-                <a class="btn btn-secondary" href="{{ path('role_index') }}">Edit roles</a>
             {% endif %}
             <a class="btn btn-warning" href="{{ path('app_logout') }}">Logout</a>
         {% else %}

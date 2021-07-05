@@ -30,9 +30,10 @@ class PostController extends AbstractController
     /**
      * @Route("/new", name="post_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Security $security): Response
     {
         $post = new Post();
+        $post->setCreator($security->getUser()->getId());
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
