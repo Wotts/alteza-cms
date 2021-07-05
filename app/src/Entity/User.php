@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\String_;
+//use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -14,7 +15,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="users")
  */
+//class User implements UserInterface, UserPasswordHasherInterface, PasswordAuthenticatedUserInterface
 class User implements UserInterface, PasswordAuthenticatedUserInterface
+
 {
     /**
      * @ORM\Id
@@ -47,7 +50,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\OneToMany(targetEntity=Post::class, mappedBy="creator")
      */
-    private $post;
+    private $posts;
+
 
     public function __construct()
     {
@@ -92,6 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+//        $this->password = $this->hashPassword($password);
 
         return $this;
     }
@@ -116,25 +121,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection|Role[]
-     */
-    public function getRoles(): Collection
+    public function getRoles(): array
     {
-        return $this->roles;
+        $roles = [];
+        foreach ($this->roles as $role) {
+            array_push($roles, $role->getDescription());
+        }
+        return $roles;
     }
 
-    /**
-     * @return Collection|Role[]
-     */
     public function getPosts(): Collection
     {
         return $this->posts;
     }
 
-    /**
-     * @return Collection|Role[]
-     */
     public function getComments(): Collection
     {
         return $this->comments;

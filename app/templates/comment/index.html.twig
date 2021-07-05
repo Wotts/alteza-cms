@@ -1,41 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Comment index{% endblock %}
+{% block title %}Comment overview{% endblock %}
 
 {% block body %}
-    <h1>Comment index</h1>
+    <div class="container">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Creator</th>
-                <th>Title</th>
-                <th>Content</th>
-                <th>Created</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for comment in comments %}
-            <tr>
-                <td>{{ comment.id }}</td>
-                <td>{{ comment.creator }}</td>
-                <td>{{ comment.title }}</td>
-                <td>{{ comment.content }}</td>
-                <td>{{ comment.created ? comment.created|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('comment_show', {'id': comment.id}) }}">show</a>
-                    <a href="{{ path('comment_edit', {'id': comment.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <h1>Comment overview</h1>
 
-    <a href="{{ path('comment_new') }}">Create new</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Creator</th>
+                    <th>Content</th>
+                    <th>Created</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <td>{{ comment.id }}</td>
+                    <td>{{ comment.creator }}</td>
+                    <td>{{ comment.content }}</td>
+                    <td>{{ comment.created ? comment.created|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        <a class="btn btn-secondary" href="{{ path('comment_edit', {'id': comment.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">There are no comments</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a class="btn btn-primary" href="{{ path('comment_new') }}">Create new</a>
+    </div>
 {% endblock %}

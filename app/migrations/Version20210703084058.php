@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210701205505 extends AbstractMigration
+final class Version20210703084058 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -24,7 +24,7 @@ final class Version20210701205505 extends AbstractMigration
         $this->addSql('CREATE SEQUENCE post_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE roles_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE users_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE TABLE comment (id INT NOT NULL, post_id INT NOT NULL, creator INT NOT NULL, title VARCHAR(255) NOT NULL, content TEXT NOT NULL, created TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE comment (id INT NOT NULL, post_id INT NOT NULL, creator INT NOT NULL, content TEXT NOT NULL, created TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_9474526C4B89032C ON comment (post_id)');
         $this->addSql('CREATE TABLE post (id INT NOT NULL, creator INT NOT NULL, title VARCHAR(255) NOT NULL, content TEXT NOT NULL, created TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE roles (id INT NOT NULL, description VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
@@ -36,10 +36,12 @@ final class Version20210701205505 extends AbstractMigration
         $this->addSql('ALTER TABLE comment ADD CONSTRAINT FK_9474526C4B89032C FOREIGN KEY (post_id) REFERENCES post (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE user_role ADD CONSTRAINT FK_2DE8C6A3A76ED395 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE user_role ADD CONSTRAINT FK_2DE8C6A3D60322AC FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql("INSERT INTO users (id, username, password) VALUES (1, 'baas', '$2y$13\$VnOQZiD4IC3i6WOFSVLr8eyzcJca3rNFRLMPiMvjIaS6uGVQ9q7VO')");
-        $this->addSql("INSERT INTO roles (id, description) VALUES (1, 'ADMIN')");
-        $this->addSql("INSERT INTO roles (id, description) VALUES (2, 'USER')");
-        $this->addSql("INSERT INTO user_role (user_id, role_id) VALUES (1, 1)");
+        $this->addSql('INSERT INTO users (id, username, password) VALUES (1, "baas", "$2y$13$VnOQZiD4IC3i6WOFSVLr8eyzcJca3rNFRLMPiMvjIaS6uGVQ9q7VO");');
+        $this->addSql('INSERT INTO users (id, username, password) VALUES (2, "gebruiker", "$2y$13$IaFpOLTkIt3gYoh/quTKNOrPBo67IvuprwxVzT.oN6eKsEvZoMnLK");');
+        $this->addSql('INSERT INTO roles (id, description) VALUES (1, "ADMIN");');
+        $this->addSql('INSERT INTO roles (id, description) VALUES (2, "USER");');
+        $this->addSql('INSERT INTO user_role (user_id, role_id) VALUES (1, 1);');
+        $this->addSql('INSERT INTO user_role (user_id, role_id) VALUES (2, 2);');
     }
 
     public function down(Schema $schema): void

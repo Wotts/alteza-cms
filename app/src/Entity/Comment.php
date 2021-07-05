@@ -26,11 +26,6 @@ class Comment
     private string $creator;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $title;
-
-    /**
      * @ORM\Column(type="text")
      */
     private string $content;
@@ -66,18 +61,6 @@ class Comment
     public function setCreator(int $creator): self
     {
         $this->creator = $creator;
-
-        return $this;
-    }
-
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
 
         return $this;
     }

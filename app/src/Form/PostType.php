@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Post;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,12 +14,16 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('creator', EntityType::class, array(
-                    'multiple' => false,
-                    'choice_label' => 'username',
-                    'class'    => 'App\Entity\User',
-                )
-            )
+            ->add('creator')
+//            ->add('creator', EntityType::class, array(
+//                    'multiple' => false,
+//                    'choice_label' => 'username',
+//                    'choice_value' => function (?User $entity) {
+//                        return $entity ? $entity->getId() : '';
+//                    },
+//                    'class'    => 'App\Entity\User',
+//                )
+//            )
             ->add('title')
             ->add('content')
         ;

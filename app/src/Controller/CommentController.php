@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,7 +40,7 @@ class CommentController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
 
-            return $this->redirectToRoute('comment_index');
+            return $this->redirectToRoute('overview');
         }
 
         return $this->render('comment/new.html.twig', [
@@ -51,10 +52,11 @@ class CommentController extends AbstractController
     /**
      * @Route("/{id}", name="comment_show", methods={"GET"})
      */
-    public function show(Comment $comment): Response
+    public function show(Comment $comment, UserRepository $userRepository): Response
     {
         return $this->render('comment/show.html.twig', [
             'comment' => $comment,
+            'creator' => $userRepository->findOneBy(['id' => $comment->getCreator()]),
         ]);
     }
 
@@ -69,7 +71,7 @@ class CommentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('comment_index');
+            return $this->redirectToRoute('overview');
         }
 
         return $this->render('comment/edit.html.twig', [
@@ -89,6 +91,6 @@ class CommentController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('comment_index');
+        return $this->redirectToRoute('overview');
     }
 }

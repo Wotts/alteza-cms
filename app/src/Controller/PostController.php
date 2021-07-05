@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Form\PostType;
 use App\Repository\PostRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/post")
@@ -39,7 +41,7 @@ class PostController extends AbstractController
             $entityManager->persist($post);
             $entityManager->flush();
 
-            return $this->redirectToRoute('post_index');
+            return $this->redirectToRoute('overview');
         }
 
         return $this->render('post/new.html.twig', [
@@ -51,10 +53,12 @@ class PostController extends AbstractController
     /**
      * @Route("/{id}", name="post_show", methods={"GET"})
      */
-    public function show(Post $post): Response
+    public function show(Post $post, UserRepository $userRepository, Security $security): Response
     {
         return $this->render('post/show.html.twig', [
             'post' => $post,
+            'creator' => $userRepository->findOneBy(['id' => $post->getCreator()]),
+            'user' => $security->getUser(),
         ]);
     }
 
@@ -89,6 +93,6 @@ class PostController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('post_index');
+        return $this->redirectToRoute('overview');
     }
 }

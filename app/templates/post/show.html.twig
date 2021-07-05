@@ -3,46 +3,56 @@
 {% block title %}Post{% endblock %}
 
 {% block body %}
-    <h1>Post</h1>
+    <div class="container">
+   {% if comment.creator == user.id or 'ADMIN' in user.roles %}
+                                        {{ include('comment/_delete_form.html.twig') }}
+                                    {% endif %}       <h1>{{ post.title }}</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ post.id }}</td>
-            </tr>
-            <tr>
-                <th>Creator</th>
-                <td>{{ post.creator }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ post.title }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ post.content }}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{{ post.created ? post.created|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Comments</th>
-                <td>
-                    <ul>
-                        {% for comment in post.comments %}
-                            <li>{{ comment.title }} : {{ comment.content }}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Creator</th>
+                    <td>{{ creator }}</td>
+                </tr>
+                <tr>
+                    <th>Content</th>
+                    <td>{{ post.content }}</td>
+                </tr>
+                <tr>
+                    <th>Created</th>
+                    <td>{{ post.created ? post.created|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Comments</th>
+                    <td>
+                        <ul>
+                            {% for comment in post.comments %}
+                                <li>
+                                    <table>
+                                        <tr>
+                                            {{ comment.content }}
+                                        </tr>
+                                        <tr>
+                                            {% if comment.creator == user.id or 'ADMIN' in user.roles %}
+                                                {{ include('comment/_delete_form.html.twig') }}
+                                            {% endif %}
+                                        </tr>
+                                    </table>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-primary" href="{{ path('comment_new', {'id': post.id}) }}">New comment</a>
 
-    <a href="{{ path('post_index') }}">back to list</a>
+        <a class="btn btn-secondary" href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
 
-    <a href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
+        <a class="btn btn-secondary" href="{{ path('overview') }}">Back to overview</a>
+        {% if creator == user.username %}
+            {{ include('post/_delete_form.html.twig') }}
+        {% endif %}
+    </div>
 
-    {{ include('post/_delete_form.html.twig') }}
 {% endblock %}

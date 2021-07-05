@@ -1,5 +1,8 @@
 security:
-    encoders:
+#    encoders:
+#        App\Entity\User:
+#            algorithm: auto
+    password_hashers:
         App\Entity\User:
             algorithm: auto
 
@@ -15,7 +18,7 @@ security:
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+            security: true
         main:
             lazy: true
             provider: app_user_provider
@@ -34,5 +37,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/user, roles: IS_AUTHENTICATED_FULLY }
+#        - { path: ^/role, roles: ADMIN }
+#        - { path: ^/post, roles: [ADMIN, USER] }
+#        - { path: ^/comment, roles: [ADMIN, USER] }
+
