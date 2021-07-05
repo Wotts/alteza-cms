@@ -31,7 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
@@ -133,17 +133,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        if (gettype($roles) == 'array') {
-            return array_unique($roles);
-        }
 
-        return array_unique($roles->toArray());
+        return $roles;
     }
 
     public function setRoles(array $roles): self
     {
-//        var_dump($roles);
-//        die;
         $this->roles = $roles;
 
         return $this;
@@ -161,7 +156,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function addRole($role): self
     {
-        if (!$this->roles->contains($role)) {
+        if (!in_array($role, $this->roles)) {
             $this->roles[] = $role;
         }
 
@@ -170,7 +165,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeRole($role): self
     {
-        $this->roles->removeElement($role);
+        unset($this->roles[array_search($role, $this->roles)]);
 
         return $this;
     }

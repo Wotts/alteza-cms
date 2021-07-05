@@ -36,18 +36,14 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            var_dump($request->request->get('user'));
-//            die;
             $password = $passwordEncoder->hashPassword($user, $request->request->get('user')['plainPassword']);
             $user->setPassword($password);
-            $user->setRoles($request->request->get('user')['roles']);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
             return $this->redirectToRoute('user_index');
         }
-
 
         return $this->render('user/new.html.twig', [
             'user' => $user,

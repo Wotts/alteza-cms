@@ -25,7 +25,6 @@ class UserType extends AbstractType
                     'user' => 'ROLE_USER',
                     'admin' => 'ROLE_ADMIN'
                 ),
-                'empty_data' => 'ROLE_USER',
                 'label' => 'Role :',
                 'multiple' => true,
                 'expanded' => true,
