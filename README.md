@@ -10,8 +10,6 @@
 #### create and populate database:
 `docker exec -it alteza-cms`
 
-`php bin/console doctrine:migrations:diff`
-
 `php bin/console doctrine:migrations:migrate`
 
 `php bin/console doctrine:fixtures:load`
@@ -20,5 +18,7 @@ visit http://localhost:8080/
 
 ### login with:
 baas:eindbaas
+
+or
 
 gebruiker:welkom01
