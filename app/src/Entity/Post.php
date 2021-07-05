@@ -4,11 +4,9 @@ namespace App\Entity;
 
 use App\Entity\User;
 use App\Repository\PostRepository;
-use ContainerQCFJPXQ\getUserRepositoryService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * @ORM\Entity(repositoryClass=PostRepository::class)
@@ -51,7 +49,6 @@ class Post
 
     public function __construct()
     {
-        // put the creator on construct from session
         $date = new \DateTime();
         $this->created = $date->setTimeZone(new \DateTimeZone('Europe/Amsterdam'));
         $this->comments = new ArrayCollection();
@@ -98,12 +95,12 @@ class Post
         return $this;
     }
 
-    public function getCreated(): ?\DateTimeInterface
+    public function getCreated(): ?\DateTime
     {
         return $this->created;
     }
 
-    public function setCreated(\DateTimeInterface $created): self
+    public function setCreated(\DateTime $created): self
     {
         $this->created = $created;
 

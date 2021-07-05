@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,11 +38,10 @@ class Comment
      * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $post;
+    private Post $post;
 
     public function __construct()
     {
-        // put the creator on construct from session
         $date = new \DateTime();
         $this->created = $date->setTimeZone(new \DateTimeZone('Europe/Amsterdam'));
     }
@@ -77,12 +75,12 @@ class Comment
         return $this;
     }
 
-    public function getCreated(): \DateTimeInterface
+    public function getCreated(): \DateTime
     {
         return $this->created;
     }
 
-    public function setCreated(\DateTimeInterface $created): self
+    public function setCreated(\DateTime $created): self
     {
         $this->created = $created;
 
