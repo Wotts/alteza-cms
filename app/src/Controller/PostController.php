@@ -68,6 +68,8 @@ class PostController extends AbstractController
      */
     public function edit(Request $request, Post $post): Response
     {
+        $this->denyAccessUnlessGranted('EDIT', $post);
+
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
@@ -88,6 +90,8 @@ class PostController extends AbstractController
      */
     public function delete(Request $request, Post $post): Response
     {
+        $this->denyAccessUnlessGranted('DELETE', $post);
+
         if ($this->isCsrfTokenValid('delete'.$post->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($post);

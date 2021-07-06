@@ -67,6 +67,8 @@ class CommentController extends AbstractController
      */
     public function edit(Request $request, Comment $comment): Response
     {
+        $this->denyAccessUnlessGranted('EDIT', $comment);
+
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
@@ -87,6 +89,8 @@ class CommentController extends AbstractController
      */
     public function delete(Request $request, Comment $comment): Response
     {
+        $this->denyAccessUnlessGranted('DELETE', $comment);
+
         if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($comment);
