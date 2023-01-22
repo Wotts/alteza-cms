@@ -122,7 +122,7 @@
         "version": "3.1.0"
     },
     "php": {
-        "version": "7.4"
+        "version": "8.1"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"

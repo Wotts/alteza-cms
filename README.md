@@ -8,7 +8,9 @@
 `make up`
 
 #### create and populate database:
-`docker exec -it alteza-cms`
+Make sure you have `composer v2.*` installed.
+
+`docker exec -it alteza-cms /bin/bash`
 
 `php bin/console doctrine:migrations:migrate`
 
